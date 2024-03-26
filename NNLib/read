@@ -5,5 +5,5 @@ Only ANN type works in this component, 6 nodes for hidden layer is maximum
 Inputs:
 Target: the target variable you would like to map
 input1/2/3/4: the input variable to the neural network
-Learning_rate: here the rate at which the neural network learns. I'd suggest adding a slider with a min/max of 0/1e-6, or even 0/1e-8. if still overfitted reduce the learning rate max even further.
+Learning_rate: here the rate at which the neural network learns. I'd suggest adding a slider with a min/max of 0/1e-6, or even 0/1e-8.
 
