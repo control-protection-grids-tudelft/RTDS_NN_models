@@ -1,0 +1,18 @@
+CCompiler4: Starting to parse file C:\Users\Bara\Documents\RSCAD\RTDS_USER_FX\BIN\CMODEL_SOURCE\FNN42.c
+CCompiler4: Finished parsing file C:\Users\Bara\Documents\RSCAD\RTDS_USER_FX\BIN\CMODEL_SOURCE\FNN42.c
+CCompiler4: creating assembly code for model: FNN42
+Output from compile to .mc: 
+In file included from C:\Users\Bara\Documents\RSCAD\RTDS_USER_FX\BIN\CMODEL_SOURCE\FNN42_CS.c:136:0:
+C:\Program Files\RTDS\RSCAD FX 2.0\BIN\CMODEL_SOURCE\BLTIN_GCC/builtin_gcc.h:222:7: warning: conflicting types for built-in function 'ceilf' [enabled by default]
+C:\Program Files\RTDS\RSCAD FX 2.0\BIN\CMODEL_SOURCE\BLTIN_GCC/builtin_gcc.h:223:7: warning: conflicting types for built-in function 'cosf' [enabled by default]
+C:\Program Files\RTDS\RSCAD FX 2.0\BIN\CMODEL_SOURCE\BLTIN_GCC/builtin_gcc.h:224:7: warning: conflicting types for built-in function 'expf' [enabled by default]
+C:\Program Files\RTDS\RSCAD FX 2.0\BIN\CMODEL_SOURCE\BLTIN_GCC/builtin_gcc.h:225:7: warning: conflicting types for built-in function 'floorf' [enabled by default]
+C:\Program Files\RTDS\RSCAD FX 2.0\BIN\CMODEL_SOURCE\BLTIN_GCC/builtin_gcc.h:226:7: warning: conflicting types for built-in function 'fmaxf' [enabled by default]
+C:\Program Files\RTDS\RSCAD FX 2.0\BIN\CMODEL_SOURCE\BLTIN_GCC/builtin_gcc.h:227:7: warning: conflicting types for built-in function 'fminf' [enabled by default]
+C:\Program Files\RTDS\RSCAD FX 2.0\BIN\CMODEL_SOURCE\BLTIN_GCC/builtin_gcc.h:228:7: warning: conflicting types for built-in function 'logf' [enabled by default]
+C:\Program Files\RTDS\RSCAD FX 2.0\BIN\CMODEL_SOURCE\BLTIN_GCC/builtin_gcc.h:229:7: warning: conflicting types for built-in function 'powf' [enabled by default]
+C:\Program Files\RTDS\RSCAD FX 2.0\BIN\CMODEL_SOURCE\BLTIN_GCC/builtin_gcc.h:230:7: warning: conflicting types for built-in function 'roundf' [enabled by default]
+C:\Program Files\RTDS\RSCAD FX 2.0\BIN\CMODEL_SOURCE\BLTIN_GCC/builtin_gcc.h:231:7: warning: conflicting types for built-in function 'sinf' [enabled by default]
+C:\Program Files\RTDS\RSCAD FX 2.0\BIN\CMODEL_SOURCE\BLTIN_GCC/builtin_gcc.h:232:7: warning: conflicting types for built-in function 'sqrtf' [enabled by default]
+Output from assembler: 
+Output from compile of DLL: 

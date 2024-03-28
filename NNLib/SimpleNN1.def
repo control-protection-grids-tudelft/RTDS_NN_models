@@ -1,0 +1,120 @@
+Component Builder 2.0
+COMPONENT-BUILDER-OPTIONS:
+  COMPONENT-MODE:        CTL
+  AUTO-UPDATE-FILE-DEFN: true
+  SHOW-NODE-NAMES:       false
+  DEFAULT-FONT-SIZE:     10
+
+PARAMETERS:
+  SECTION: "CONFIGURATION"
+    CtrlGrp "Assigned Controls Group" "" 0 INTEGER 1 1 36
+    Pri     "Priority Level"          "" 0 INTEGER 1 1
+  SECTION: "SimpleNN1" FALSE
+    numInputs  "Number of Inputs:"  "" 0 INTEGER 7 7 7
+    numOutputs "Number of Outputs:" "" 0 INTEGER 1 1 1
+
+GRAPHICS:
+  Box(-32,-128,32,152)
+  Arc(0,-128,4,0,-180)
+  Line(-64,-96,-32,-96)
+  Line(-32,-32,-40,-40)
+  Line(-32,-96,-40,-104)
+  FontSize(9)
+  FText(-69.0,-86,"x1")
+  Line(-32,-64,-40,-72)
+  FText(-69.0,-22,"u1")
+  FText(-69.0,-54,"x2")
+  Line(-32,-64,-40,-56)
+  Line(-64,0,-32,0)
+  Line(-64,-64,-32,-64)
+  Line(-64,32,-32,32)
+  Line(-32,-32,-40,-24)
+  FText(-69.0,10,"Lr")
+  Line(-32,-96,-40,-88)
+  Line(-64,64,-32,64)
+  Line(-64,-32,-32,-32)
+  FText(-69.0,42,"id")
+  Line(-32,32,-40,40)
+  Line(-32,96,-40,104)
+  Line(-32,64,-40,56)
+  Line(-32,0,-40,-8)
+  Line(-64,96,-32,96)
+  FText(-64.0,106,"a")
+  Line(-32,96,-40,88)
+  FText(-64.0,74,"b")
+  Line(-32,0,-40,8)
+  Line(-32,32,-40,24)
+  FText(64.0,10,"y")
+  Line(64,0,32,0)
+  Line(-32,64,-40,72)
+  If (numInputs>6)
+  EndIf
+  If (numInputs>2)
+  EndIf
+  If (numInputs>1)
+  EndIf
+  If (numInputs>3)
+  EndIf
+  If (numInputs>4)
+  EndIf
+  If (numInputs>5)
+  EndIf
+  FontSize(10)
+  FText(-64,144,"limit")
+  Line(-64,128,-32,128)
+
+NODES:
+  INITIALIZE_NODE u1  = _dud_
+  INITIALIZE_NODE Lr  = _dud_
+  INITIALIZE_NODE id  = _dud_
+  INITIALIZE_NODE a   = _dud_
+  INITIALIZE_NODE x2  = _dud_
+  INITIALIZE_NODE y   = _dud_
+  INITIALIZE_NODE b   = _dud_
+  INITIALIZE_NODE x1  = _dud_
+  INITIALIZE_NODE max = _dud_
+
+  u1 -2 -1 INPUT REAL
+  Lr -2 0 INPUT REAL
+  id -2 1 INPUT REAL
+  a -2 3 INPUT REAL
+  x2 -2 -2 INPUT REAL
+  y 2 0 OUTPUT REAL
+  b -2 2 INPUT REAL
+  x1 -2 -3 INPUT REAL
+  max -2 4 INPUT REAL
+  #IF numInputs>=2
+  #END
+  #IF numInputs>=3
+  #END
+  #IF numInputs>=4
+  #END
+  #IF numInputs>=5
+  #END
+  #IF numInputs>=6
+  #END
+  #IF numInputs>=7
+  #END
+
+VALVE-GROUP:
+  RTDS.CTL.RISC_CMODEL
+      V4COMP: ModelName = SimpleNN1 SubSystem = $SS Processor = $CtrlGrp Priority = $Pri
+      DATA_SIZES: INTDATA=2 FLOATDATA=0 CHARDATA_FRMT=0 INVARS=8 OUTVARS=1
+      INTDATA: $numInputs numInputs $numOutputs numOutputs
+      INVARS: $a IEEE a $b IEEE b $id IEEE id $Lr IEEE Lr $u1 IEEE u1
+      INVARS: $x2 IEEE x2 $x1 IEEE x1 $max IEEE limit
+      OUTVARS: $y IEEE y
+  END
+
+COMPONENT-DESCRIPTORS:
+  CLASSIFICATION: GENERAL
+  PHASES:         N/A
+  MAINSTEP:       YES
+  SUBSTEP:        NO
+  SUPERSTEP:      NO
+  SMALLDT:        NO
+  GPES:           NO
+  TWRT:           NO
+  DIST:           NO
+  DEPRECATED:     NO
+
