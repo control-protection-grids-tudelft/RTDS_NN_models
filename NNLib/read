@@ -1,9 +1,28 @@
+cbtest3
+
 Parameters:
-in cbtest2 Prototype most functionalities are still not active. Four main parameters need to be selected when the component is loaded, these are "numInputs", "type", "numWeights", and "batch_size", the other parameters dont change anything yet.
+in cbtest3 Prototype most functionalities are still not active. Four main parameters need to be selected when the component is loaded, these are "numInputs", "type", "numWeights", and "batch_size", the other parameters dont change anything yet.
 Only ANN type works in this component, 6 nodes for hidden layer is maximum 
 
 Inputs:
 Target: the target variable you would like to map
 input1/2/3/4: the input variable to the neural network
-Learning_rate: here the rate at which the neural network learns. I'd suggest adding a slider with a min/max of 0/0.0001, or even 0/0.00001. if still overfitted reduce the learning rate max even further. generally id recomment starting with a value of 1e-6.
+Learning_rate: here the rate at which the neural network learns. I'd suggest adding a slider with a min/max of 0/1e-6, or even 0/1e-8.
 
+
+FNN42
+This is a 4 feature (inputs) 2 output NN with 2 or 1 layers and 1-12 weights per layer. Due to the size of this network, if you see that the training process is 
+hectic Id recomended using maximum weights 12 for both hidden layers. Th component does not have any computational parameters and has the following inputs:
+
+x1/2/3/4: Inputs to the NN
+L: Number of layers (can either be 2 or 1, due to some technecalities use a float constant, if the float is below 2 it will be a 1 hidden layer NN)
+u1/u2: Number of weights in hidden layer 1/2. (use float constant between 1-12)
+Lr: Learning rate, if this is set to 0 then the neural network is not computing the loss. (connect to Slider with min/max 0/0.00001)
+y1/y2: here give the target variables
+lambda 1/2: a variable/constant multiplied by the loss of target 1/2. use float of 1 for both if you would like both targets to be treated equally, 
+incearse one to prioritize that target or decrease other (attach float). Can be used to customize a loss function.
+batch_size: The number of iterations before the loss is computed, recomended to keep at 1 (attach float of 1.0)
+
+This component is still inefficient so run it when you have a good amount of available processing space. the training process would include quick iteration over the range of inputs.
+If these changes cannot be iterated through quicly (can't change x values within the second) then you need to reduce learning rate to 0 between iterations to avoid overfitting. 
+Overfitting is very easy with this neural network component. 
