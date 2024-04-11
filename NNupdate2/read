@@ -1,1 +1,2 @@
-
+Use trainNN.py to train a model in Python. The weights of the models can then be updated by updating their respective C file. The weight definintions are found in the STATIC section for the layered components 
+and in the CODE_FUNCTIONS section in the Full Models.
