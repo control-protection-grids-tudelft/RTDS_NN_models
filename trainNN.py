@@ -60,10 +60,10 @@ def clean_column_name(col_name):
 
 #Place File with CSV RSCAD Data here:
 
-dir_path = r'C:\Desktop\Final_Data\ErrData\new'
+dir_path = r'C:\Users\Bara\Desktop\Final_Data\ErrData\new'
 dir_path = ''.join(filter(lambda x: x in string.printable, dir_path))
 
-dir_path2 = r'C:\Users\Desktop\Final_Data\ErrData\new\test'
+dir_path2 = r'C:\Users\Bara\Desktop\Final_Data\ErrData\new\test'
 dir_path2 = ''.join(filter(lambda x: x in string.printable, dir_path2))
 
 #%%
@@ -130,7 +130,8 @@ n_rows = 600    #Number of rows to extract from every csv datafile
 all_c = ['Subsystem #1|CTLs|Vars|Ppu_CSA5P','Subsystem #1|CTLs|Vars|Perr_CSA5P', 'Subsystem #1|CTLs|Vars|PIpwr_CSA5P',
          'Subsystem #1|CTLs|Vars|Qpu_CSA5P','Subsystem #1|CTLs|Vars|qerr_CSA5P','Subsystem #1|CTLs|Vars|IQREFq_CSA5P', 
          'Subsystem #1|CTLs|Vars|id_CSA5P','Subsystem #1|CTLs|Vars|iderr_CSA5P','Subsystem #1|CTLs|Vars|outpi1_t_CSA5P', 
-         'Subsystem #1|CTLs|Vars|iq_CSA5P','Subsystem #1|CTLs|Vars|iqerr_CSA5P','Subsystem #1|CTLs|Vars|outpi2_t_CSA5P'
+         'Subsystem #1|CTLs|Vars|iq_CSA5P','Subsystem #1|CTLs|Vars|iqerr_CSA5P','Subsystem #1|CTLs|Vars|outpi2_t_CSA5P',
+         'Subsystem #1|CTLs|Vars|VQ_CSA5PREF', 'Subsystem #1|CTLs|Vars|VD_CSA5PREF'
          ]
 
 # Now make 2 string arrays, one to hold your target variable coloumn names and one for input variables to the NN
@@ -146,36 +147,50 @@ input_c = ['Perr', 'Ppu','qerr', 'Qpu']
 # set of data. use all_c array here. The difference between the all_c and the target_c and input_c arrays is that 
 # multiple data extractions can happen using same instance aslong as all the varaibles are included in all_c.
 #For example, make an instant for 5 timesteps:
+
+
+Timesteps = 5
     
-window_gen = WindowGenerator(input_width=5, label_width=1, shift=0, all_c=all_c)
+window_gen = WindowGenerator(input_width=Timesteps, label_width=1, shift=0, all_c=all_c)
+
 
 # Now use target_c and input_c to extract the relevant data into X and y training NN data: 
-X, y = window_gen.generate_windows_from_directory(dir_path, n_rows, input_c, target_c)
+#X, y = window_gen.generate_windows_from_directory(dir_path, n_rows, input_c, target_c)
 # The shape of x here is (sample, timestep, feature) 
 
 #y = y.flatten() #Uncomment if only one target variable
 
 # now you can use the same class instance to define new input and target variables for for example:
     
-
+    
 target_c2 = ['PIpwr']
 input_c2 = ['Perr', 'Ppu']
 X2, y2 = window_gen.generate_windows_from_directory(dir_path, n_rows, input_c2, target_c2)
 
 y2 = y2.flatten() # Since one target
 
+target_c3 = ['outpi1']
+input_c3 = ['iderr', 'id', 'VQ']
+X3, y3 = window_gen.generate_windows_from_directory(dir_path, n_rows, input_c3, target_c3)
+
+y3 = y3.flatten() # Since one target
+
+
+
 #%% Splitting Data
 
 # Now split data and randomize:
 
 # This is for LSTM training data    
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.02, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X2, y2, test_size=0.02, random_state=42)
+
+X_train3, X_test3, y_train3, y_test3 = train_test_split(X3, y3, test_size=0.02, random_state=42)
     
 # For ANN training data, you would need to remove the timestep dimension from the X dataframe:
     
-X_ANN = X[:,4,:]
+X_ANN = X2[:,Timesteps-1,:]
 
-X_trainANN, X_testANN, y_trainANN, y_testANN = train_test_split(X_ANN, y, test_size=0.02, random_state=42)
+X_trainANN, X_testANN, y_trainANN, y_testANN = train_test_split(X_ANN, y2, test_size=0.02, random_state=42)
 
 #%%
 y_trainANN.shape[1]
@@ -187,13 +202,13 @@ y_trainANN.shape[1]
 # activation='linear'. Below is an example of an ANN with 2 hidden layers and 2 outputs
    
 model = Sequential([
-    Dense(12, input_shape=(X_ANN.shape[1],), activation='tanh'), # First argument is number of nodes
-    Dense(12, activation='tanh'),
-    Dense(y_trainANN.shape[1]) # value inside brackets is number of outputs
+    Dense(12, input_shape=(X_ANN.shape[1],), activation='linear'), # First argument is number of weights
+    #Dense(12, activation='tanh'),
+    Dense(1) # value inside brackets is number of outputs
 ])
 
 model.compile(optimizer='adam', loss='mean_squared_error')
-model.fit(X_trainANN, y_trainANN, epochs=5, batch_size=32, validation_split=0.2)
+model.fit(X_trainANN, y_trainANN, epochs=4, batch_size=32, validation_split=0.2)
 
 # Evaluate the model
 loss_ann = model.evaluate(X_testANN, y_testANN)
@@ -235,16 +250,21 @@ printCarray(W3,b3)
     
 nodes = 1       #Start by defining number of nodes, the timesteps was selected when the data was loaded
 model = tf.keras.Sequential()
-model.add(tf.keras.layers.LSTM(nodes, input_shape=(X.shape[1], X.shape[2])))
-model.add(tf.keras.layers.Dense(y.shape[1]))    #A dense layer is required at the end of the LSTM, change argument to 1 if only 1 output
+model.add(tf.keras.layers.LSTM(nodes, input_shape=(X2.shape[1], X2.shape[2])))
+model.add(tf.keras.layers.Dense(1))    #A dense layer is required at the end of the LSTM, change argument to 1 if only 1 output
 model.compile(optimizer='adam', loss='mean_squared_error')
-model.fit(X_train, y_train, epochs=3, verbose=1)
+model.fit(X_train, y_train, epochs=5, verbose=1)
 
-
+model2 = tf.keras.Sequential()
+model2.add(tf.keras.layers.LSTM(nodes, input_shape=(X3.shape[1], X3.shape[2])))
+model2.add(tf.keras.layers.Dense(1))    #A dense layer is required at the end of the LSTM, change argument to 1 if only 1 output
+model2.compile(optimizer='adam', loss='mean_squared_error')
+model2.fit(X_train3, y_train3, epochs=5, verbose=1)
 #%% LSTM Weight Printing Function
 
 # basically pass the model as argument and this function will print the weights and biases in C format
 
+   
 def printLSTM(model):
     # Extract LSTM layer weights
     lstm_weights = model.layers[0].get_weights()
@@ -256,8 +276,20 @@ def printLSTM(model):
     W_i, W_f, W_c, W_o = W[:, :num_units], W[:, num_units:2*num_units], W[:, 2*num_units:3*num_units], W[:, 3*num_units:]
     b_i, b_f, b_c, b_o = b[:num_units], b[num_units:2*num_units], b[2*num_units:3*num_units], b[3*num_units:]
 
+    # Transpose the matrices
+    U_i = U_i.T
+    U_f = U_f.T
+    U_c = U_c.T
+    U_o = U_o.T
+
+    W_i = W_i.T
+    W_f = W_f.T
+    W_c = W_c.T
+    W_o = W_o.T
+
     # Extract dense layer weights
     dense_weights, dense_biases = model.layers[1].get_weights()
+    dense_weights = dense_weights.T  # Transpose dense layer weights as well
 
     # Helper function to print weights or biases in C array format
     def print_c_array(name, array):
@@ -270,10 +302,121 @@ def printLSTM(model):
         print_c_array(name, array)
     
     # Print dense layer weights and biases
-    print_c_array('dense_weights', dense_weights)
-    print_c_array('dense_biases', dense_biases)
+    print_c_array('W', dense_weights)
+    print_c_array('b', dense_biases)
+
+# Example Use:
+printLSTM(model)
+
+printLSTM(model2)
+
 
 #%%
-#Example Use:
+
+#To define initialized weight matricies:
+
+def xavier_init(fan_in, fan_out, gain=1):
+    """Xavier initialization using the gain factor for different activations."""
+    std = gain * np.sqrt(2.0 / (fan_in + fan_out))
+    return np.random.randn(fan_out, fan_in) * std
+
+def initialize_lstm_weights(input_dim, output_dim):
+    """Initialize weights for an LSTM layer with Xavier initialization."""
+    # Gain for tanh activation
+    gain = np.sqrt(2.0 / (1 + np.tanh(1) ** 2))
     
-printLSTM(model)
+    # Initialize input weights (from input to each gate)
+    Wf = xavier_init(input_dim, output_dim, gain)
+    Wi = xavier_init(input_dim, output_dim, gain)
+    Wc = xavier_init(input_dim, output_dim, gain)
+    Wo = xavier_init(input_dim, output_dim, gain)
+
+    # Initialize recurrent weights (from previous output to each gate)
+    Uf = xavier_init(output_dim, output_dim, gain)
+    Ui = xavier_init(output_dim, output_dim, gain)
+    Uc = xavier_init(output_dim, output_dim, gain)
+    Uo = xavier_init(output_dim, output_dim, gain)
+
+    # Initialize biases for each gate
+    bf = np.zeros(output_dim)
+    bi = np.zeros(output_dim)
+    bc = np.zeros(output_dim)
+    bo = np.zeros(output_dim)
+
+    return Wf, Uf, bf, Wi, Ui, bi, Wc, Uc, bc, Wo, Uo, bo
+
+def initialize_dense_weights(input_dim, output_dim):
+    """Initialize weights for a dense layer using Xavier initialization."""
+    W = xavier_init(input_dim, output_dim)
+    b = np.zeros(output_dim)
+    return W, b
+
+def print_weights_in_c_format(weights, name):
+    """Print the weights in a flattened format suitable for C arrays."""
+    flat_weights = weights.flatten()
+    print(f"double {name}[{len(flat_weights)}] = {{{', '.join(format(w, '.8f') for w in flat_weights)}}};")
+
+# Parameters
+input_dim = 6
+lstm_nodes = 10
+output_nodes = 6
+
+# Initialize weights
+Wf, Uf, bf, Wi, Ui, bi, Wc, Uc, bc, Wo, Uo, bo = initialize_lstm_weights(input_dim, lstm_nodes)
+W, b = initialize_dense_weights(lstm_nodes, output_nodes)
+
+# Optionally print weights to verify
+print_weights_in_c_format(Wf, "Wf")
+print_weights_in_c_format(Uf, "Uf")  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#%%
+# Print weights in C format
+print_weights_in_c_format(Wf, "Wf")
+print_weights_in_c_format(Wi, "Wi")
+print_weights_in_c_format(Wc, "Wc")
+print_weights_in_c_format(Wo, "Wo")
+
+#%%
+print_weights_in_c_format(Uf, "Uf")
+
+
+print_weights_in_c_format(Ui, "Ui")
+
+
+print_weights_in_c_format(Uc, "Uc")
+
+
+print_weights_in_c_format(Uo, "Uo")
+#%%
+print_weights_in_c_format(W, "W")
+print_weights_in_c_format(b, "b")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
