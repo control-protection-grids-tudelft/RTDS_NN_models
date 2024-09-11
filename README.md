@@ -1,3 +1,5 @@
+![alt text](IEPG_logo.jpg?raw=true)
+
 # RTDS Neural Network Models
 
 This is the repository of HVDC/AC electrical grid models for RSCAD/RTDS with NNs. The library relies on HVDC models developed [here](https://github.com/control-protection-grids-tudelft/HVDC-RTDS-models.git).
@@ -14,4 +16,4 @@ Bara Masalmeh, Rashmi Prasad, Vaibhav Nougain, and Aleksandra Lekić, "Neural Ne
 - **Rashmi Prasad** and **Vaibhav Nougain** have reviewed the package and provided support
 - **Aleksandra Lekić** defined the package idea, and use cases, and provided the resource for the design
 
-![alt text](IEPG_logo.jpg?raw=true)
+
