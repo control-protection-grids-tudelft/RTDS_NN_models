@@ -13,3 +13,5 @@ Bara Masalmeh, Rashmi Prasad, Vaibhav Nougain, and Aleksandra Lekić, "Neural Ne
 - Toolbox created by **Bara Masalmeh**, as part of his MSc thesis: ``Neural Network-Based Predictive Control for Modular Multilevel Converters in HVDC Transmission Grids''
 - **Rashmi Prasad** and **Vaibhav Nougain** have reviewed the package and provided support
 - **Aleksandra Lekić** defined the package idea, and use cases, and provided the resource for the design
+
+[![alt text](IEPG_logo.jpg)](Logo) 
