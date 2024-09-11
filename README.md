@@ -14,4 +14,4 @@ Bara Masalmeh, Rashmi Prasad, Vaibhav Nougain, and Aleksandra Lekić, "Neural Ne
 - **Rashmi Prasad** and **Vaibhav Nougain** have reviewed the package and provided support
 - **Aleksandra Lekić** defined the package idea, and use cases, and provided the resource for the design
 
-[![alt text](IEPG_logo.jpg)](Logo) 
+![alt text](IEPG_logo.jpg?raw=true)
