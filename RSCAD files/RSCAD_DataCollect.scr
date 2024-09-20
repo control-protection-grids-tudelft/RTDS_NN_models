@@ -1,0 +1,40 @@
+
+int b=1;
+function savefile2(int b) 
+{ 
+fprintf(stdmsg,"Saving plot data for positive idmode Case Number %d\n",b);
+SavePlotToCSV "Plot_Name","File_Path\FileName_"::itoa(b)::".csv";
+return();
+}
+//Example Function
+function savefile2T(int b) 
+{ 
+fprintf(stdmsg,"Saving plot data for positive Trans idmode Case Number %d\n",b);
+SavePlotToCSV "IdrefControl","C:\Users\Bara\Desktop\Final_Data\idMode\trans\fptrans1_"::itoa(b)::".csv";
+return();
+}
+
+
+float start_value = 100.0;     // Starting value for Pref_CSA5P
+float end_value = 1000.0;       // Ending value for Pref_CSA5P (example value, adjust as needed)
+float increment = 1.0;        // Increment step for Pref_CSA5P
+
+int num_steps = (end_value - start_value) / increment;
+
+// Use a for loop to change the Pref_CSA5P variable and save the plot
+for (int i = 0; i <= num_steps; i++)
+{
+    // Set the value of Pref_CSA5P
+    float current_value = start_value + (i * increment);
+    SetSlider "Subsystem #1 : CTLs : Inputs : Pref_CSA5P" = current_value;
+    savefile2T(i + 1);
+    //float current_value2 = current_value * -1
+    //SUSPEND 0.1;  // Give some time for the system to react (adjust the time as needed)
+    SUSPEND 5.0;
+    UpdatePlots;
+    // Save the plot data
+    savefile2(i + 1);  // Adding 1 to avoid starting from 0
+
+    SUSPEND 0.1;  // Give some time before the next iteration (adjust the time as needed)
+}
+Stop;

@@ -1,0 +1,45 @@
+
+int b=1;
+function savefile2(int b) 
+{ 
+fprintf(stdmsg,"Saving plot data for positive idmode Case Number %d\n",b);
+SavePlotToCSV "collection_data","C:\Users\alekic\Documents\RSCAD\RTDS_USER_FX\fileman\RSCAD-NN\data\Collection_"::itoa(b)::".csv";
+return();
+}
+
+float start_value = 100.0;     // Starting value for Pref_CSA4P
+float end_value = 1000.0;       // Ending value for Pref_CSA4P (example value, adjust as needed)
+float increment = 1.0;        // Increment step for Pref_CSA4P
+
+int num_steps = (end_value - start_value) / increment;
+
+float start_valueq = 100.0;     // Starting value for Qref_CSA4P
+float end_valueq = 1000.0;       // Ending value for Qref_CSA4P (example value, adjust as needed)
+float incrementq = 1.0;        // Increment step for Qref_CSA4P
+
+int num_stepsq = (end_valueq - start_valueq) / incrementq;
+
+// Use a for loop to change the Pref_CSA5P variable and save the plot
+for (int i = 0; i <= num_steps; i++)
+{
+    // Set the value of Pref_CSA5P
+    float current_value = start_value + (i * increment);
+
+    // Set the value of Qref_CSA5P
+    float current_valueq = start_valueq + (i * incrementq);
+
+    SetSlider "Subsystem #1 : CTLs : Inputs : Pref_CSA4P" = current_value;
+    SUSPEND 1.0;
+    UpdatePlots;
+    // Save the plot data
+    savefile2(2*i + 1);  // Adding 1 to avoid starting from 0
+
+    SetSlider "Subsystem #1 : CTLs : Inputs : Qref_CSA4P" = current_valueq;
+    SUSPEND 1.0;
+    UpdatePlots;
+    // Save the plot data
+    savefile2(2*i + 2);  // Adding 1 to avoid starting from 0
+
+    SUSPEND 0.3;
+}
+Stop;
