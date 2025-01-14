@@ -5,6 +5,8 @@
 This is the repository of HVDC/AC electrical grid models for RSCAD/RTDS with NNs. The library relies on HVDC models developed [here](https://github.com/control-protection-grids-tudelft/HVDC-RTDS-models.git).
 The repository includes NN models and a user guide on creating and using them in RSCAD/RTDS simulation. 
 
+*Note:* The libraries are designed for the NovaCor 1.0 RTDS version. 
+
 ## References
 In the following paper, you will find the usage of this toolbox and its application for the control of an HVDC-based electrical grid. When using this toolbox, please refer to the paper.
 ```
