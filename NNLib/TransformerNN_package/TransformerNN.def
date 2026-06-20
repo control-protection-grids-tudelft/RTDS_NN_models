@@ -1,0 +1,40 @@
+Component Builder 2.0
+COMPONENT-BUILDER-OPTIONS:
+  COMPONENT-MODE:        CTL
+  AUTO-UPDATE-FILE-DEFN: true
+  SHOW-NODE-NAMES:       false
+  DEFAULT-FONT-SIZE:     10
+
+PARAMETERS:
+  SECTION: "CONFIGURATION"
+    ctrlGrp "Assigned Control Group" "" 0 INTEGER 1 1 54
+    Pri     "Priority Level"         "" 0 INTEGER 1 1
+  SECTION: "ParameterSelection"
+    numInputs  "Description" "" 0 INTEGER 1 1 10
+    numOutputs "Description" "" 0 INTEGER 1 1 10
+    Layers     "Description" "" 0 INTEGER 1 1 3
+    batch_size "Description" "" 0 INTEGER 1
+  SECTION: "Layer1"
+    activation1 "Description" "LINEAR;TAH;RELU;SIG" 0 TOGGLE  0
+    Nodes1      "Description" ""                    0 INTEGER 10 1 20
+  SECTION: "Layer2" Layers>1
+    activation2 "Description" "LINEAR;TAH;RELU;SIG" 0 TOGGLE  0
+    Nodes2      "Description" ""                    0 INTEGER 10 1 20
+  SECTION: "Layer3" Layers>2
+    activation3 "Description" "LINEAR;TAH;RELU;SIG" 0 TOGGLE  0
+    Nodes3      "Description" ""                    0 INTEGER 10 1 20
+
+GRAPHICS:
+  Box(-32,-280,64,480)
+  ...
+COMPONENT-DESCRIPTORS:
+  CLASSIFICATION: GENERAL
+  PHASES:         N/A
+  MAINSTEP:       YES
+  SUBSTEP:        NO
+  SUPERSTEP:      NO
+  SMALLDT:        NO
+  GPES:           NO
+  TWRT:           NO
+  DIST:           NO
+  DEPRECATED:     NO
